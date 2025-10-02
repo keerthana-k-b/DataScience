@@ -1,0 +1,315 @@
+28/08/2025
+
+SELECT item,amount
+FROM Orders;
+
+SELECT *
+FROM Orders
+WHERE amount < 500;
+
+SELECT *
+FROM Customers
+WHERE country = "USA";
+
+SELECT *
+FROM Customers
+WHERE country = "USA" AND age = 22;
+
+SELECT *
+FROM Customers
+WHERE country = "USA" OR age = 22;
+
+SELECT *
+FROM Customers
+WHERE NOT country = "USA" OR age = 22;
+
+SELECT *
+FROM Orders
+WHERE NOT item = "Mouse" AND customer_id = 4;
+
+SELECT SUM(amount)
+FROM Orders;
+
+SELECT SUM(amount)
+FROM Orders
+WHERE customer_id = 4;
+
+SELECT AVG(amount)
+FROM Orders
+WHERE customer_id = 4;
+
+SELECT COUNT(amount)
+FROM Orders
+WHERE customer_id = 4;
+
+SELECT MAX(amount)
+FROM Orders
+WHERE customer_id = 4;
+
+SELECT MIN(amount)
+FROM Orders
+WHERE customer_id = 4;
+
+SELECT COUNT(country)
+FROM Customers;
+
+SELECT COUNT(country) AS "TOTAL COUNTRY"
+FROM Customers;
+
+SELECT COUNT(DISTINCT(country)) AS "TOTAL DISTINCT COUNTRY"
+FROM Customers;
+
+SELECT COUNT(DISTINCT(customer_id)) AS "TOTAL CUSTOMERS ORDERED"
+FROM Orders;
+
+SELECT DISTINCT(country)
+FROM Customers;
+
+SELECT customer_id, SUM(amount) AS "TOTAL AMOUNT"
+FROM Orders
+GROUP BY customer_id;
+
+SELECT customer_id, SUM(amount) AS "TOTAL AMOUNT"
+FROM Orders
+GROUP BY customer_id
+HAVING SUM(amount) < 800;
+
+SELECT country,AVG(age)
+FROM Customers
+GROUP BY country;
+
+SELECT country,AVG(age)
+FROM Customers
+GROUP BY country
+HAVING AVG(age) < 25;
+
+SELECT * 
+FROM Customers
+ORDER BY first_name;
+
+SELECT * 
+FROM Customers
+ORDER BY first_name,last_name DESC;
+
+SELECT *
+FROM Customers
+ORDER BY country DESC, age ASC;
+
+
+29/08/2025
+
+SELECT first_name, age
+FROM Customers
+LIMIT 2;
+
+SELECT first_name, age
+FROM Customers
+LIMIT 2  offset 2;
+
+SELECT first_name, age,country
+FROM Customers
+WHERE country IN ("USA");
+
+SELECT first_name, age,country
+FROM Customers
+WHERE country IN ("USA","UAE");
+
+SELECT first_name, age,country
+FROM Customers
+WHERE country NOT IN ("USA","UAE");
+
+SELECT *
+FROM Orders
+WHERE amount BETWEEN 250 AND 400;
+
+SELECT *
+FROM Orders
+WHERE item BETWEEN "K" AND "M";
+
+SELECT *
+FROM Orders
+WHERE item BETWEEN "K" AND "Mouse";
+
+SELECT *
+FROM Orders
+WHERE amount BETWEEN "K" AND "Mou";
+
+SELECT *
+FROM Orders
+WHERE customer_id LIKE 4;
+
+SELECT *
+FROM Customers
+WHERE country LIKE "UK";
+
+SELECT *
+FROM Customers
+WHERE country NOT LIKE "UK";
+
+SELECT *
+FROM Customers
+WHERE country LIKE "U%";
+
+SELECT *
+FROM Customers
+WHERE country LIKE "U_";
+
+SELECT *
+FROM Customers
+WHERE country LIKE "U__";
+
+SELECT *
+FROM Customers
+WHERE country LIKE "U_A";
+
+SELECT *
+FROM Customers
+WHERE country LIKE "U%A";
+
+SELECT *
+FROM Customers
+WHERE first_name LIKE "J%N"; --NAME STARTS WITH J AND END WITH N
+
+--Customers table, LAST NAME starts with "R",end with "T" and country ends with "K" 
+SELECT *
+FROM Customers
+WHERE last_name LIKE "R%T" AND country LIKE "%K";
+
+SELECT *
+FROM Customers 
+WHERE age < (
+SELECT  AVG(age)
+FROM Customers);
+
+SELECT *,
+CASE
+   WHEN amount < 10000 THEN "small order"
+   WHEN amount > 10000 THEN "large order"
+END AS "ORDER TYPE"
+FROM Orders;
+
+SELECT *,
+CASE
+   WHEN age BETWEEN 20 AND 25 THEN "A"
+   WHEN age BETWEEN 25 AND 30 THEN "B"
+   WHEN age BETWEEN 30 AND 35 THEN "C"
+END AS "AGE GROUP"
+FROM Customers;
+
+SELECT customer_id, first_name
+FROM Customers
+WHERE EXISTS (
+SELECT order_id
+FROM Orders
+WHERE Orders.customer_id = Customers.customer_id AND amount < 12000
+);
+
+
+
+01/09/2025
+JOINS(IMP) LEFT,RIGHT,INNER,OUTER
+
+SELECT Customers.customer_id,Customers.country,Orders.item,Orders.amount
+FROM Customers
+INNER JOIN Orders
+ON Customers.customer_id = Orders.customer_id;
+
+SELECT Customers.customer_id,Customers.country,Orders.item,Orders.amount
+FROM Customers
+JOIN Orders
+ON Customers.customer_id = Orders.customer_id;
+
+SELECT Customers.customer_id,Customers.country,Orders.item,Orders.amount
+FROM Customers
+LEFT JOIN Orders
+ON Customers.customer_id = Orders.customer_id;
+
+SELECT Customers.first_name,Customers.last_name,Orders.order_id
+FROM Customers
+CROSS JOIN Orders;
+
+SELECT
+A.first_name AS FirstPersonFN,
+A.last_name AS FirstPersonLN,
+B.First_name AS SecondPersonFN,
+B.last_name AS SecondPersonLN
+FROM Customers A, Customers B
+WHERE A.Last_Name=B.Last_Name AND A.First_Name <> B.First_Name;
+
+
+
+
+08/09/2025
+
+
+15/09/2025  [sql study  link:- https://www.programiz.com/sql/select ]   [ online compiler programiz link:-  https://www.programiz.com/sql/online-compiler ]
+
+INSERT INTO Customers(customer_id,first_name,last_name,age,country)          -- insert a row in the Customers table
+VALUES
+(6,'Keerthana','K B',23,'India');
+
+
+INSERT INTO Customers(customer_id,first_name,last_name,age,country)
+VALUES
+(7,'Karthik','K B',20,'India'),
+(8,'Karthika','K B',25,'India');
+
+
+INSERT INTO Customers
+VALUES
+(9,'BIJU','K M',55,'India')
+(10,'SMITHA','BIJU',45,'India');
+
+UPDATE Customers           --update a single value in the given row
+SET age = 21
+WHERE customer_id = 1;
+
+UPDATE Customers          -- update a single value in the given row
+SET first_name = 'Kevin' 
+WHERE customer_id = 1;
+
+UPDATE Customers          -- update multiple values in the given row
+SET first_name = 'Kevin' , last_name = 'Ram'
+WHERE customer_id = 1;
+
+UPDATE Customers     -- update multiple rows satisfying the condition
+SET country='NP'
+WHERE age=28;
+
+ee portions ahnu ullathh 1,2 above chythh
+1.SQL INSERT INTO
+2.SQL UPDATE
+3.SQL SELECT INTO (Copy Table)
+4.SQL INSERT INTO SELECT Statement
+5.SQL DELETE and TRUNCATE
+
+
+DELETE FROM Customers
+WHERE customer_id = 3;
+
+DELETE FROM Customers;
+
+TRUNCATE TABLE Customers;
+
+
+HACKERRANK IL CHYTH NOKKAAM
+FOR SQL LINK   https://www.hackerrank.com/domains/sql
+
+
+COLAB sheets :
+
+https://colab.research.google.com/drive/1id4sO7VocCpFjWCUt95PPwL6RNCkFebR
+
+Pandas        https://colab.research.google.com/drive/1tz8JCM1dZrvX0sU-KRRHvTeUxQDte7XB
+
+Initial data processing and simple statistical tools        https://colab.research.google.com/drive/1Ck3pUuT014Q6wOMDpFL88BcfLBCpByc8
+
+Datacleaning and techniques using python libraries         https://colab.research.google.com/drive/1_Cmhmxbp0y9kjIDZa2TRb1HdhOc4d_Y_
+
+https://colab.research.google.com/drive/1GSs1Oy6eaEQO70EknWAv0TKYv02e1jdS
+
+Data visualization and processing using python tools        https://colab.research.google.com/drive/1bBNk5-WU-khwB8t2kssHmotnV8tTFCfW
+
+Advanced Data visualization dashboard creation using python         https://colab.research.google.com/drive/1983bz5_khBjT6rajvQH3UyjsMmVfY3Ye 
+
+Kaggle      https://www.kaggle.com/datasets/timmate/avocado-prices-2020?select=avocado-updated-2020.csv
